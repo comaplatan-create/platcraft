@@ -162,9 +162,96 @@ body {
     z-index: 1;
 }
 
+.fireworks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.firework {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(18px);
+    opacity: 0.85;
+    transform: translate3d(0,0,0);
+    animation: glowPulse var(--dur) ease-in-out infinite, drift var(--dur) ease-in-out infinite;
+}
+
+.firework::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.3) 20%, transparent 55%);
+    filter: blur(2px);
+}
+
+.firework-1 {
+    --dur: 10s;
+    width: 260px;
+    height: 260px;
+    top: 10%;
+    left: 15%;
+    background: radial-gradient(circle, rgba(248,113,113,0.9) 0%, rgba(251,191,36,0.4) 40%, rgba(220,38,38,0) 70%);
+}
+
+.firework-2 {
+    --dur: 12s;
+    width: 220px;
+    height: 220px;
+    top: 22%;
+    left: 65%;
+    background: radial-gradient(circle, rgba(59,130,246,0.95) 0%, rgba(168,85,247,0.4) 40%, rgba(124,58,237,0) 75%);
+}
+
+.firework-3 {
+    --dur: 14s;
+    width: 180px;
+    height: 180px;
+    top: 54%;
+    left: 20%;
+    background: radial-gradient(circle, rgba(34,197,94,0.9) 0%, rgba(6,182,212,0.35) 40%, rgba(14,165,233,0) 75%);
+}
+
+.firework-4 {
+    --dur: 11s;
+    width: 240px;
+    height: 240px;
+    top: 58%;
+    left: 70%;
+    background: radial-gradient(circle, rgba(236,72,153,0.95) 0%, rgba(249,115,22,0.35) 35%, rgba(251,146,60,0) 75%);
+}
+
+.firework-5 {
+    --dur: 9s;
+    width: 200px;
+    height: 200px;
+    top: 35%;
+    left: 45%;
+    background: radial-gradient(circle, rgba(56,189,248,0.9) 0%, rgba(168,85,247,0.25) 40%, rgba(168,85,247,0) 75%);
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(1.08); }
+}
+
+@keyframes drift {
+    0% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(-8px, 6px) scale(1.02); }
+    50% { transform: translate(0, 10px) scale(1.03); }
+    75% { transform: translate(8px, 4px) scale(1.01); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
 .content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: center;
