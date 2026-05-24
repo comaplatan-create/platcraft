@@ -31,13 +31,97 @@
         </div>
         
         <div class="content">
-            <h1 class="pixel-text">Добро пожаловать на Официальный сайт Platon Studios!</h1>
+            <h1 id="welcome-text" class="pixel-text">Добро пожаловать на Официальный сайт Platon Studios!</h1>
             <p class="subtitle">У нас есть эта игра — наш самый эксклюзивный продукт!</p>
             <a href="platcraft.html" class="pixel-button green-btn">Перейти на страницу PlatCraft</a>
         </div>
         
         <div class="scroll-indicator pixel-text">ЛИСТАЙ ВНИЗ</div>
     </section>
+
+    <script>
+        (function(){
+            const key = 'ps_welcome_shown_v1';
+            const isFirst = !localStorage.getItem(key);
+            const welcome = document.getElementById('welcome-text');
+            // create canvas breath overlay
+            const hero = document.getElementById('hero');
+            const breathWrap = document.createElement('div');
+            breathWrap.className = 'dragon-breath';
+            const canvas = document.createElement('canvas');
+            canvas.id = 'breath-canvas';
+            canvas.width = 160; // low-res for pixelated look
+            canvas.height = 64;
+            breathWrap.appendChild(canvas);
+            hero.appendChild(breathWrap);
+
+            function drawFrame(progress){
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                const cx = canvas.width * 0.15;
+                const cy = canvas.height * 0.65;
+                const maxR = Math.max(canvas.width, canvas.height) * 0.9;
+                const r = maxR * progress;
+                const grd = ctx.createRadialGradient(cx, cy, r*0.1, cx, cy, r);
+                grd.addColorStop(0, 'rgba(255,250,200,0.95)');
+                grd.addColorStop(0.25, 'rgba(255,180,50,0.9)');
+                grd.addColorStop(0.5, 'rgba(245,80,30,0.65)');
+                grd.addColorStop(1, 'rgba(120,20,10,0)');
+                ctx.fillStyle = grd;
+                ctx.fillRect(0,0,canvas.width,canvas.height);
+
+                // add flicker pixels
+                const density = Math.floor(60 * progress);
+                for(let i=0;i<density;i++){
+                    const px = Math.floor((cx + (Math.random()-0.5)*r*1.2));
+                    const py = Math.floor((cy + (Math.random()-0.8)*r*0.6));
+                    const size = Math.max(1, Math.floor((1.5 - Math.random())*2));
+                    ctx.fillStyle = `rgba(${200+Math.floor(Math.random()*55)}, ${60+Math.floor(Math.random()*160)}, ${20+Math.floor(Math.random()*40)}, ${0.6+Math.random()*0.4})`;
+                    ctx.fillRect(px, py, size, size);
+                }
+            }
+
+            function animateBreath(duration, cb){
+                const start = performance.now();
+                function frame(now){
+                    const t = Math.min(1, (now - start)/duration);
+                    // ease-out
+                    const progress = 1 - Math.pow(1 - t, 3);
+                    drawFrame(progress);
+                    if(t < 1) requestAnimationFrame(frame);
+                    else cb && cb();
+                }
+                requestAnimationFrame(frame);
+            }
+
+            function showWelcome(withAnim){
+                if(withAnim){
+                    breathWrap.style.opacity = '1';
+                    animateBreath(1800, ()=>{
+                        breathWrap.style.transition = 'opacity 600ms ease-out';
+                        breathWrap.style.opacity = '0';
+                        welcome.classList.add('reveal');
+                        localStorage.setItem(key, '1');
+                    });
+                } else {
+                    // immediate, no animation
+                    welcome.classList.add('reveal');
+                    breathWrap.style.display = 'none';
+                }
+            }
+
+            // apply pixelated scaling
+            canvas.style.width = (canvas.width*4) + 'px';
+            canvas.style.height = (canvas.height*4) + 'px';
+            canvas.style.imageRendering = 'pixelated';
+
+            if(isFirst){
+                showWelcome(true);
+            } else {
+                showWelcome(false);
+            }
+        })();
+    </script>
 
     <section id="about" class="about">
         <h2 class="pixel-text text-green">О КОМПАНИИ</h2>

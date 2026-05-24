@@ -1,25 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#7dd3fc"/>
-      <stop offset="100%" stop-color="#0ea5e9"/>
-    </linearGradient>
-    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#4ade80"/>
-      <stop offset="100%" stop-color="#16a34a"/>
-    </linearGradient>
-    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f59e0b"/>
-      <stop offset="100%" stop-color="#f97316"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="12" fill="#0f172a"/>
-  <polygon points="12,18 52,18 44,26 20,26" fill="url(#g2)"/>
-  <polygon points="12,18 20,26 20,46 12,38" fill="#7c2d12"/>
-  <polygon points="20,26 44,26 36,46 20,46" fill="#c2410c"/>
-  <polygon points="44,26 52,18 52,38 44,46" fill="#9a3412"/>
-  <path d="M18 24 L20 22 L44 22 L46 24 L46 38 L44 40 L20 40 L18 38 Z" fill="rgba(255,255,255,0.15)"/>
-  <text x="32" y="38" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="18" fill="#fde047" stroke="#d97706" stroke-width="1">PS</text>
-  <circle cx="32" cy="28" r="3.5" fill="rgba(255,255,255,0.35)" />
-  <path d="M16 14 L32 6 L48 14" fill="none" stroke="#facc15" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <!-- Pixel-art soil block with PS letters -->
+  <rect width="64" height="64" fill="#0b1220"/>
+  <!-- top grass layer -->
+  <rect x="8" y="8" width="48" height="12" fill="#6aa84f"/>
+  <rect x="8" y="20" width="48" height="6" fill="#4a7a2f"/>
+  <!-- soil pixels -->
+  <rect x="8" y="26" width="10" height="10" fill="#8b5a2b"/>
+  <rect x="18" y="26" width="10" height="10" fill="#6e3f24"/>
+  <rect x="28" y="26" width="10" height="10" fill="#7a4a2a"/>
+  <rect x="38" y="26" width="10" height="10" fill="#5b351e"/>
+  <rect x="8" y="36" width="10" height="10" fill="#5b351e"/>
+  <rect x="18" y="36" width="10" height="10" fill="#7a4a2a"/>
+  <rect x="28" y="36" width="10" height="10" fill="#6e3f24"/>
+  <rect x="38" y="36" width="10" height="10" fill="#8b5a2b"/>
+  <!-- PS letters (pixel font) -->
+  <g fill="#fde047">
+    <!-- P -->
+    <rect x="18" y="18" width="4" height="12"/>
+    <rect x="22" y="18" width="6" height="4"/>
+    <rect x="22" y="22" width="6" height="4"/>
+    <!-- S -->
+    <rect x="34" y="18" width="6" height="4"/>
+    <rect x="34" y="22" width="6" height="4"/>
+    <rect x="34" y="26" width="6" height="4"/>
+  </g>
 </svg>
