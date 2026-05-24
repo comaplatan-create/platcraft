@@ -112,22 +112,33 @@
                 setTimeout(()=> animateBreathSequence(), 180);
             });
 
-            // Pixel fireworks canvas
+            // Pixel fireworks canvas — responsive to hero size so launches cover whole area
             const fwCanvas = document.getElementById('fireworks-canvas');
             const fwScale = 3;
-            const fwCtx = setupCanvas(fwCanvas, 220, 140, fwScale);
             fwCanvas.style.position = 'absolute';
             fwCanvas.style.top = '0';
             fwCanvas.style.left = '0';
             fwCanvas.style.zIndex = '2';
             fwCanvas.style.pointerEvents = 'none';
 
+            const fwCtx = fwCanvas.getContext('2d');
             const rockets = [];
             const particles = [];
 
+            function resizeFW(){
+                const rect = hero.getBoundingClientRect();
+                const w = Math.max(200, Math.floor(rect.width / fwScale));
+                const h = Math.max(120, Math.floor(rect.height / fwScale));
+                fwCanvas.width = w;
+                fwCanvas.height = h;
+                fwCanvas.style.width = rect.width + 'px';
+                fwCanvas.style.height = rect.height + 'px';
+            }
+
             function launchFirework(){
-                const x = Math.random() * (fwCtx.canvas.width*0.8) + fwCtx.canvas.width*0.1;
-                rockets.push({x, y: fwCtx.canvas.height + 6, vy: - (4 + Math.random()*5), peak: Math.random() * fwCtx.canvas.height * 0.5 + 10, hue: Math.floor(Math.random()*360)});
+                // choose an x across full canvas width, and a peak somewhere above mid
+                const x = Math.random() * (fwCanvas.width * 0.9) + fwCanvas.width*0.05;
+                rockets.push({x, y: fwCanvas.height + 6, vy: - (4 + Math.random()*5), peak: Math.random() * fwCanvas.height * 0.6 + 8, hue: Math.floor(Math.random()*360)});
             }
 
             function spawnParticles(x,y,hue){
@@ -140,11 +151,10 @@
             }
 
             function step(){
-                fwCtx.clearRect(0,0,fwCtx.canvas.width,fwCtx.canvas.height);
+                fwCtx.clearRect(0,0,fwCanvas.width,fwCanvas.height);
                 for(let i=rockets.length-1;i>=0;i--){
                     const r = rockets[i];
-                    r.y += r.vy;
-                    r.vy += 0.08;
+                    r.y += r.vy; r.vy += 0.08;
                     fwCtx.fillStyle = `hsl(${r.hue},80%,60%)`;
                     fwCtx.fillRect(Math.floor(r.x), Math.floor(r.y), 2,2);
                     if(r.y <= r.peak){ spawnParticles(r.x, r.y, r.hue); rockets.splice(i,1); }
@@ -159,6 +169,11 @@
                     if(p.age >= p.life) particles.splice(i,1);
                 }
             }
+
+            // handle resizing so fireworks cover hero area
+            window.addEventListener('resize', ()=>{ resizeFW(); });
+            // initial resize on load
+            window.addEventListener('load', ()=>{ resizeFW(); });
 
             setInterval(()=> launchFirework(), 800 + Math.random()*900);
             function loop(){ step(); requestAnimationFrame(loop); }
