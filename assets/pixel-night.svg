@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 24" width="320" height="240" shape-rendering="crispEdges">
+  <!-- Pixel night sky and meadow (stylized pixel art) -->
+  <!-- Sky rows -->
+  <rect x="0" y="0" width="32" height="4" fill="#021430"/>
+  <rect x="0" y="4" width="32" height="4" fill="#06284a"/>
+  <rect x="0" y="8" width="32" height="4" fill="#08356b"/>
+  <rect x="0" y="12" width="32" height="4" fill="#0b4b8f"/>
+  <rect x="0" y="16" width="32" height="4" fill="#0a2b50"/>
+
+  <!-- Stars (sparse) -->
+  <rect x="2" y="2" width="1" height="1" fill="#ffe9c6"/>
+  <rect x="8" y="3" width="1" height="1" fill="#fff0b8"/>
+  <rect x="14" y="1" width="1" height="1" fill="#fff0b8"/>
+  <rect x="20" y="5" width="1" height="1" fill="#ffe9c6"/>
+  <rect x="27" y="2" width="1" height="1" fill="#ffe9c6"/>
+  <rect x="30" y="6" width="1" height="1" fill="#fff0b8"/>
+
+  <!-- Faint moon shape -->
+  <rect x="24" y="3" width="2" height="2" fill="#f8f3d1"/>
+  <rect x="22" y="4" width="2" height="2" fill="#f8f3d1"/>
+
+  <!-- Meadow rows -->
+  <rect x="0" y="20" width="32" height="4" fill="#0f2e16"/>
+  <rect x="0" y="18" width="32" height="2" fill="#16421b"/>
+
+  <!-- Simple pixel trees (silhouettes) -->
+  <!-- Tree 1 -->
+  <rect x="4" y="16" width="1" height="4" fill="#2b1f0f"/>
+  <rect x="3" y="14" width="3" height="2" fill="#153a16"/>
+  <rect x="2" y="12" width="5" height="2" fill="#1b5a1f"/>
+  <!-- Tree 2 -->
+  <rect x="12" y="15" width="1" height="5" fill="#2b1f0f"/>
+  <rect x="11" y="13" width="3" height="2" fill="#153a16"/>
+  <rect x="10" y="11" width="5" height="2" fill="#1b5a1f"/>
+  <!-- Tree 3 -->
+  <rect x="24" y="15" width="1" height="5" fill="#2b1f0f"/>
+  <rect x="23" y="13" width="3" height="2" fill="#153a16"/>
+  <rect x="22" y="11" width="5" height="2" fill="#1b5a1f"/>
+
+  <!-- Some flowers / plants pixels -->
+  <rect x="8" y="19" width="1" height="1" fill="#ff7ab6"/>
+  <rect x="18" y="19" width="1" height="1" fill="#ffd36b"/>
+  <rect x="28" y="19" width="1" height="1" fill="#9be87a"/>
+</svg>
