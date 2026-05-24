@@ -1,13 +1,193 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=platonstudios.html">
-    <title>Перенаправление...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Официальный сайт Platon Studios</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <!-- Подключаем шрифт "как в Майнкрафте" и базовый шрифт -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <p>Загрузка сайта... Если вы не перенаправлены автоматически, <a href="platonstudios.html" style="color: #4ade80;">нажмите здесь</a>.</p>
-    
+<body>
+    <header class="top-nav">
+        <div class="logo pixel-text">PS</div>
+        <nav>
+            <a href="#hero" class="nav-link pixel-text">ГЛАВНАЯ</a>
+            <a href="platcraft.html" class="nav-link pixel-text">ИГРЫ</a>
+            <a href="#about" class="nav-link pixel-text">О НАС</a>
+        </nav>
+    </header>
+
+    <section id="hero" class="hero">
+        <div class="beautiful-bg"></div>
+        <div class="overlay"></div>
+        <canvas id="fireworks-canvas" class="fireworks-canvas" aria-hidden="true"></canvas>
+        
+        <div class="content">
+            <h1 id="welcome-text" class="pixel-text">Добро пожаловать на Официальный сайт Platon Studios!</h1>
+            <p class="subtitle">У нас есть эта игра — наш самый эксклюзивный продукт!</p>
+            <a href="platcraft.html" class="pixel-button green-btn">Перейти на страницу PlatCraft</a>
+        </div>
+        
+        <div class="scroll-indicator pixel-text">ЛИСТАЙ ВНИЗ</div>
+    </section>
+
+    <script>
+        (function(){
+            const welcome = document.getElementById('welcome-text');
+            const hero = document.getElementById('hero');
+
+            // Dragon breath (cinematic) - always on load
+            const breathWrap = document.createElement('div');
+            breathWrap.className = 'dragon-breath';
+            const breathCanvas = document.createElement('canvas');
+            breathCanvas.id = 'breath-canvas';
+            breathWrap.appendChild(breathCanvas);
+            hero.appendChild(breathWrap);
+
+            function setupCanvas(canvas, w, h, scale){
+                canvas.width = w;
+                canvas.height = h;
+                canvas.style.width = (w*scale) + 'px';
+                canvas.style.height = (h*scale) + 'px';
+                canvas.style.imageRendering = 'pixelated';
+                return canvas.getContext('2d');
+            }
+
+            const bctx = setupCanvas(breathCanvas, 220, 96, 4);
+
+            function drawBreathFrame(ctx, progress){
+                ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+                const cx = ctx.canvas.width * 0.15;
+                const cy = ctx.canvas.height * 0.72;
+                const maxR = ctx.canvas.width * 1.3;
+                const r = maxR * progress;
+                const grd = ctx.createRadialGradient(cx, cy, r*0.05, cx, cy, r);
+                grd.addColorStop(0, 'rgba(255,250,220,1)');
+                grd.addColorStop(0.12, 'rgba(255,210,90,0.98)');
+                grd.addColorStop(0.28, 'rgba(245,95,30,0.9)');
+                grd.addColorStop(0.6, 'rgba(180,40,20,0.18)');
+                grd.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = grd;
+                ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+
+                // pixel embers
+                const count = Math.floor(160 * progress);
+                for(let i=0;i<count;i++){
+                    const angle = Math.random()*Math.PI*0.9 - Math.PI*0.45;
+                    const dist = r * (0.15 + Math.random()*1.0);
+                    const px = Math.floor(cx + Math.cos(angle)*dist + (Math.random()-0.5)*8);
+                    const py = Math.floor(cy + Math.sin(angle)*dist*0.65 + (Math.random()-0.5)*6);
+                    const size = Math.max(1, Math.floor(Math.random()*3));
+                    bctx.fillStyle = `rgba(${220+Math.floor(Math.random()*35)}, ${80+Math.floor(Math.random()*140)}, ${30+Math.floor(Math.random()*40)}, ${0.6+Math.random()*0.45})`;
+                    bctx.fillRect(px, py, size, size);
+                }
+            }
+
+            function animateBreathSequence(){
+                welcome.classList.remove('reveal');
+                const duration = 1400;
+                const start = performance.now();
+                function frame(now){
+                    const t = Math.min(1, (now - start)/duration);
+                    const ease = 1 - Math.pow(1 - t, 3);
+                    drawBreathFrame(bctx, ease);
+                    if(t < 1) requestAnimationFrame(frame);
+                    else {
+                        breathWrap.style.transition = 'opacity 700ms ease-out, transform 700ms ease-out';
+                        breathWrap.style.opacity = '0';
+                        breathWrap.style.transform = 'translateY(-10px) scale(0.98)';
+                        setTimeout(()=> welcome.classList.add('reveal'), 180);
+                    }
+                }
+                breathWrap.style.opacity = '1';
+                breathWrap.style.transform = 'translateY(0) scale(1)';
+                requestAnimationFrame(frame);
+            }
+
+            window.addEventListener('load', ()=>{
+                breathWrap.style.opacity = '0';
+                breathWrap.style.transform = 'translateY(-8px) scale(0.98)';
+                setTimeout(()=> animateBreathSequence(), 180);
+            });
+
+            // Pixel fireworks canvas — responsive to hero size so launches cover whole area
+            const fwCanvas = document.getElementById('fireworks-canvas');
+            const fwScale = 3;
+            fwCanvas.style.position = 'absolute';
+            fwCanvas.style.top = '0';
+            fwCanvas.style.left = '0';
+            fwCanvas.style.zIndex = '2';
+            fwCanvas.style.pointerEvents = 'none';
+
+            const fwCtx = fwCanvas.getContext('2d');
+            const rockets = [];
+            const particles = [];
+
+            function resizeFW(){
+                const rect = hero.getBoundingClientRect();
+                const w = Math.max(200, Math.floor(rect.width / fwScale));
+                const h = Math.max(120, Math.floor(rect.height / fwScale));
+                fwCanvas.width = w;
+                fwCanvas.height = h;
+                fwCanvas.style.width = rect.width + 'px';
+                fwCanvas.style.height = rect.height + 'px';
+            }
+
+            function launchFirework(){
+                // choose an x across full canvas width, and a peak somewhere above mid
+                const x = Math.random() * (fwCanvas.width * 0.9) + fwCanvas.width*0.05;
+                rockets.push({x, y: fwCanvas.height + 6, vy: - (4 + Math.random()*5), peak: Math.random() * fwCanvas.height * 0.6 + 8, hue: Math.floor(Math.random()*360)});
+            }
+
+            function spawnParticles(x,y,hue){
+                const n = 60 + Math.floor(Math.random()*90);
+                for(let i=0;i<n;i++){
+                    const a = Math.random()*Math.PI*2;
+                    const s = 0.8 + Math.random()*3.2;
+                    particles.push({x, y, vx: Math.cos(a)*s, vy: Math.sin(a)*s*0.7, life: 30 + Math.floor(Math.random()*50), age:0, size:1 + Math.floor(Math.random()*2), color: `hsl(${hue + Math.floor((Math.random()-0.5)*30)}, 90%, ${50+Math.floor(Math.random()*20)}%)`});
+                }
+            }
+
+            function step(){
+                fwCtx.clearRect(0,0,fwCanvas.width,fwCanvas.height);
+                for(let i=rockets.length-1;i>=0;i--){
+                    const r = rockets[i];
+                    r.y += r.vy; r.vy += 0.08;
+                    fwCtx.fillStyle = `hsl(${r.hue},80%,60%)`;
+                    fwCtx.fillRect(Math.floor(r.x), Math.floor(r.y), 2,2);
+                    if(r.y <= r.peak){ spawnParticles(r.x, r.y, r.hue); rockets.splice(i,1); }
+                }
+                for(let i=particles.length-1;i>=0;i--){
+                    const p = particles[i];
+                    p.vy += 0.06; p.x += p.vx; p.y += p.vy; p.age++;
+                    const a = Math.max(0, 1 - p.age / p.life);
+                    fwCtx.globalAlpha = a; fwCtx.fillStyle = p.color;
+                    fwCtx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size, p.size);
+                    fwCtx.globalAlpha = 1;
+                    if(p.age >= p.life) particles.splice(i,1);
+                }
+            }
+
+            // handle resizing so fireworks cover hero area
+            window.addEventListener('resize', ()=>{ resizeFW(); });
+            // initial resize on load
+            window.addEventListener('load', ()=>{ resizeFW(); });
+
+            setInterval(()=> launchFirework(), 800 + Math.random()*900);
+            function loop(){ step(); requestAnimationFrame(loop); }
+            requestAnimationFrame(loop);
+        })();
+    </script>
+
+    <section id="about" class="about">
+        <h2 class="pixel-text text-green">О КОМПАНИИ</h2>
+        <div class="about-text">
+            <p><strong>Platon Studios</strong> — это независимая студия разработки игр нового поколения. Наш подход кардинально отличается от индустриальных стандартов. Мы создаем свои игры на уникальных, собственных технологиях с чистого листа.</p>
+            <p>Без использования громоздких и популярных 3D-движков, таких как Unity Hub или Unreal Engine. Это дает нам полный, абсолютный контроль над производительностью, физикой и атмосферой каждого проекта.</p>
+            <p>Мы занимаемся играми и верим, что настоящие шедевры рождаются не в визуальных конструкторах, а в строках кода, смелых идеях и хардкорной оптимизации. Присоединяйтесь к нашему приключению.</p>
+        </div>
+    </section>
 </body>
 </html>
