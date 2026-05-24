@@ -15,7 +15,7 @@
     </div>
     
     <div class="content platcraft-content">
-        <h1 class="pixel-text platcraft-title" style="color: #fde047;">PlatCraft</h1>
+        <h1 id="plat-title" class="pixel-text platcraft-title" style="color: #fde047;"></h1>
         
         <div class="huge-description">
             <p>PlatCraft - это кубическая вселенная, где ваши мечты и фантазии обретают форму. В этом мире нет строгих правил, нет навязанных сюжетных линий и искусственных ограничений. Вы — творец, неутомимый исследователь и выживший в одном лице. Каждый блок, который вы видите перед собой, от глубокой земли под ногами до крон высоких деревьев, может быть разрушен, бережно собран, перемещен или использован для создания чего-то совершенно нового. От скромных уютных землянок до величественных мраморных замков, уходящих острыми шпилями в облака, от глубоких, таинственных шахт, полных неизведанных опасностей и сверкающих драгоценных руд, до парящих в небесах загадочных островов — все это возможно построить в PlatCraft своими собственными руками.</p>
@@ -31,5 +31,15 @@
             <a href="docs.html" class="pixel-button yellow-btn" style="padding: 15px 40px; font-size: 1.2rem;">ИНФОРМАЦИЯ</a>
         </div>
     </div>
+    <script>
+        (function(){
+            const el = document.getElementById('plat-title');
+            const text = 'PLATCRAFT';
+            el.innerHTML = text.split('').map(c => `<span class="char">${c}</span>`).join('');
+            const chars = el.querySelectorAll('.char');
+            // fast build: reveal letters quickly
+            chars.forEach((ch, i) => setTimeout(() => ch.classList.add('show'), i * 60));
+        })();
+    </script>
 </body>
 </html>
