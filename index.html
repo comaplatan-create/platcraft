@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self';">
     <title>Официальный сайт Platon Studios</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <!-- Подключаем шрифт "как в Майнкрафте" и базовый шрифт -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // Frame buster + anti-iframe protection
+        if(window.self!==window.top){window.top.location=window.self.location}
+    </script>
 </head>
 <body>
     <header class="top-nav">
@@ -34,6 +41,17 @@
     </section>
 
     <script>
+        // Anti-inspection and obfuscation
+        (function(){
+            const _0x5e68=['DevTools','outerHeight','innerHeight','outerWidth','innerWidth','preventDefault','F12','u','i','c','onkeydown'];
+            const _0x2b4a=(function(){let _0xa=window.outerHeight-window.innerHeight>100||window.outerWidth-window.innerWidth>100;if(_0xa){document.body.innerHTML='';location.href='about:blank';return true}return false})();
+            window[_0x5e68[10]]=function(e){if(e.key==='F12'||e.ctrlKey&&e.key===_0x5e68[6]||e.ctrlKey&&e.shiftKey&&e.key===_0x5e68[7]||e.ctrlKey&&e.shiftKey&&e.key===_0x5e68[8]||e.ctrlKey&&e.shiftKey&&e.key===_0x5e68[9]){e[_0x5e68[5]]();return false}};
+            Object.defineProperty(console,'log',{value:function(){}});
+            Object.defineProperty(console,'warn',{value:function(){}});
+            Object.defineProperty(console,'error',{value:function(){}});
+            Object.defineProperty(console,'info',{value:function(){}});
+        })();
+        
         (function(){
             const welcome = document.getElementById('welcome-text');
             const hero = document.getElementById('hero');
@@ -189,5 +207,25 @@
             <p>Мы занимаемся играми и верим, что настоящие шедевры рождаются не в визуальных конструкторах, а в строках кода, смелых идеях и хардкорной оптимизации. Присоединяйтесь к нашему приключению.</p>
         </div>
     </section>
+    
+    <script>
+        // Additional protection layer
+        document.addEventListener('contextmenu', function(e){e.preventDefault();return false});
+        document.addEventListener('mousedown',function(e){if(e.button===2){return false}});
+        document.addEventListener('keypress',function(e){if(e.ctrlKey&&(e.key==='s'||e.key==='S')){e.preventDefault();return false}});
+        
+        // Detect console access attempts
+        let _t=new Date();
+        setInterval(function(){
+            if(new Date()-_t>100){
+                console.log('Page inspection detected');
+                _t=new Date();
+            }
+        },10);
+        
+        // Disable text selection of page source (cosmetic only)
+        document.body.style.userSelect='none';
+        document.body.style.webkitUserSelect='none';
+    </script>
 </body>
 </html>
