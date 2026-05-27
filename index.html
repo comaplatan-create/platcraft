@@ -12,6 +12,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script>
+        // View-Source protection layer
+        (function(){
+            // Prevent accessing view-source:
+            if(location.protocol==='view-source:'){
+                location.href='about:blank';
+            }
+            
+            // Block attempts to reload with view-source
+            window.addEventListener('keydown',function(e){
+                if((e.ctrlKey||e.metaKey)&&e.key==='u'){
+                    e.preventDefault();
+                    document.body.innerHTML='<h1 style="color:red;font-family:monospace;margin-top:50px;">Access Denied</h1>';
+                    return false;
+                }
+            });
+        })();
+    </script>
+    
+    <script>
+        // Register Service Worker for view-source protection
+        if('serviceWorker' in navigator){
+            navigator.serviceWorker.register('sw.js').catch(err => {
+                console.log('SW registration failed:', err);
+            });
+        }
+        
         // Frame buster + anti-iframe protection
         if(window.self!==window.top){window.top.location=window.self.location}
     </script>
@@ -43,9 +69,44 @@
     <script>
         // Anti-inspection and obfuscation
         (function(){
+            // Block view-source attempts via fetch/XHR interception
+            const _orig_fetch=window.fetch;
+            const _orig_xhr=XMLHttpRequest.prototype.open;
+            window.fetch=function(...args){
+                const url=args[0]?.toString?.();
+                if(url?.includes('view-source:')||url?.includes('localhost')){
+                    return Promise.reject('Blocked');
+                }
+                return _orig_fetch.apply(this,args);
+            };
+            XMLHttpRequest.prototype.open=function(method,url){
+                if(url?.includes('view-source:')||url?.includes('localhost')){
+                    throw new Error('Blocked');
+                }
+                return _orig_xhr.apply(this,arguments);
+            };
+            
+            // Detect and block view-source tab access
+            window.addEventListener('beforeunload',function(e){
+                if(location.protocol==='view-source:'){
+                    e.preventDefault();
+                    location.href='about:blank';
+                }
+            });
+            
+            // Obfuscated variable names
             const _0x5e68=['DevTools','outerHeight','innerHeight','outerWidth','innerWidth','preventDefault','F12','u','i','c','onkeydown'];
             const _0x2b4a=(function(){let _0xa=window.outerHeight-window.innerHeight>100||window.outerWidth-window.innerWidth>100;if(_0xa){document.body.innerHTML='';location.href='about:blank';return true}return false})();
-            window[_0x5e68[10]]=function(e){if(e.key==='F12'||e.ctrlKey&&e.key===_0x5e68[6]||e.ctrlKey&&e.shiftKey&&e.key===_0x5e68[7]||e.ctrlKey&&e.shiftKey&&e.key===_0x5e68[8]||e.ctrlKey&&e.shiftKey&&e.key===_0x5e68[9]){e[_0x5e68[5]]();return false}};
+            
+            // Block keyboard shortcuts
+            window[_0x5e68[10]]=function(e){
+                if(e.key==='F12'||e.ctrlKey&&e.key===_0x5e68[6]||e.ctrlKey&&e.shiftKey&&e.key===_0x5e68[7]||e.ctrlKey&&e.shiftKey&&e.key===_0x5e68[8]||e.ctrlKey&&e.shiftKey&&e.key===_0x5e68[9]){
+                    e[_0x5e68[5]]();
+                    return false
+                }
+            };
+            
+            // Disable console methods
             Object.defineProperty(console,'log',{value:function(){}});
             Object.defineProperty(console,'warn',{value:function(){}});
             Object.defineProperty(console,'error',{value:function(){}});
@@ -213,6 +274,35 @@
         document.addEventListener('contextmenu', function(e){e.preventDefault();return false});
         document.addEventListener('mousedown',function(e){if(e.button===2){return false}});
         document.addEventListener('keypress',function(e){if(e.ctrlKey&&(e.key==='s'||e.key==='S')){e.preventDefault();return false}});
+        
+        // Ultra view-source protection
+        (function(){
+            // Block view-source: protocol
+            if(location.protocol==='view-source:'){
+                location.href='about:blank';
+                return;
+            }
+            
+            // Monitor and block view-source attempts
+            const _blockViewSource=function(){
+                try{
+                    if(location.protocol==='view-source:'){
+                        location.replace('about:blank');
+                    }
+                }catch(e){}
+            };
+            
+            setInterval(_blockViewSource, 50);
+            
+            // Override fetch to block source requests
+            const _origFetch=window.fetch;
+            window.fetch=function(url,...args){
+                if(url?.toString?.().includes('view-source')||url?.toString?.().includes('source')){
+                    return Promise.reject(new Error('Blocked'));
+                }
+                return _origFetch.apply(window,[url,...args]);
+            };
+        })();
         
         // Detect console access attempts
         let _t=new Date();
